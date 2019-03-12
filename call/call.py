@@ -18,7 +18,7 @@ class Call(object):
         if args or kwargs:
             self.amend(*args, **kwargs)
         
-    def __repr__(self):
+    def __str__(self):
         return '{name}({args})'.format(
             name = self.name,
             args = ', '.join('{}={!r}'.format(name, value) for name, value in self.arguments.items()),
