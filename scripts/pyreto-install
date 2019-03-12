@@ -23,8 +23,8 @@ function create-prod-dir {
 }
 
 function create-venv {
-    python -m virtualenv --python=python2 "$PYTHON2_DIR" >/dev/null 2>&1
-    python -m virtualenv --python=python3 "$PYTHON3_DIR" >/dev/null 2>&1
+    python -m virtualenv --python=python2 "$PYTHON2_DIR"
+    python -m virtualenv --python=python3 "$PYTHON3_DIR"
 }
 
 function make-importable() {
@@ -33,10 +33,10 @@ function make-importable() {
 }
 
 function install-requirements() {
-    "$PYTHON2" -m pip install setuptools wheel twine pytest >/dev/null 2>&1
-    "$PYTHON3" -m pip install setuptools wheel twine pytest >/dev/null 2>&1
-    find . -name "$VENV_DIR" -prune -o -name requirements.txt -exec bash -c "$PYTHON2 -m pip install -r {} >/dev/null 2>&1" \;
-    find . -name "$VENV_DIR" -prune -o -name requirements.txt -exec bash -c "$PYTHON3 -m pip install -r {} >/dev/null 2>&1" \;
+    "$PYTHON2" -m pip install setuptools wheel twine pytest
+    "$PYTHON3" -m pip install setuptools wheel twine pytest
+    find . -name "$VENV_DIR" -prune -o -name requirements.txt -exec bash -c "$PYTHON2 -m pip install -r {}" \;
+    find . -name "$VENV_DIR" -prune -o -name requirements.txt -exec bash -c "$PYTHON3 -m pip install -r {}" \;
 }
 
 function add-to-path() {
