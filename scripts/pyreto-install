@@ -1,0 +1,50 @@
+#!/bin/bash
+
+set -e
+
+PROD_DIR="$(realpath "$(dirname "${BASH_SOURCE[0]}")/../.prod")"
+VENV_DIR="$(realpath "$(dirname "${BASH_SOURCE[0]}")/../.venv")"
+PYTHON2_DIR="$VENV_DIR/2"
+PYTHON3_DIR="$VENV_DIR/3"
+PYTHON2="$PYTHON2_DIR/bin/python"
+PYTHON3="$PYTHON3_DIR/bin/python"
+PROFILE=~/.bash_profile
+
+function pyreto-install() {
+    create-prod-dir
+    create-venv
+    make-importable
+    install-requirements
+    add-to-path
+}
+
+function create-prod-dir {
+    mkdir "$PROD_DIR"
+}
+
+function create-venv {
+    python -m virtualenv --python=python2 "$PYTHON2_DIR" >/dev/null 2>&1
+    python -m virtualenv --python=python3 "$PYTHON3_DIR" >/dev/null 2>&1
+}
+
+function make-importable() {
+    find "$VENV_DIR" -name no-global-site-packages.txt -delete
+    find "$VENV_DIR" -name site-packages -exec bash -c 'echo "../../../../../" > "{}/pyreto.pth"' \;
+}
+
+function install-requirements() {
+    "$PYTHON2" -m pip install setuptools wheel twine pytest >/dev/null 2>&1
+    "$PYTHON3" -m pip install setuptools wheel twine pytest >/dev/null 2>&1
+    find . -name "$VENV_DIR" -prune -o -name requirements.txt -exec bash -c "$PYTHON2 -m pip install -r {} >/dev/null 2>&1" \;
+    find . -name "$VENV_DIR" -prune -o -name requirements.txt -exec bash -c "$PYTHON3 -m pip install -r {} >/dev/null 2>&1" \;
+}
+
+function add-to-path() {
+    local LINE="export PATH=\"\$PATH:$(pwd)/scripts\""
+    if ! grep -Fxq "$LINE" "$PROFILE"
+    then
+        echo "$LINE" >> "$PROFILE"
+    fi
+}
+
+pyreto-install
