@@ -34,6 +34,7 @@ function pyreto-update() {
     update-version
     update-prod-dir
     run-tests
+    confirm-upload
     upload-to-github
     upload-to-pypi
 }
@@ -236,6 +237,11 @@ function run-tests() {
     then
         exit 1
     fi
+}
+
+function confirm-upload() {
+    read -r -p "Upload project? [Y/n] " response
+    [[ $response =~ ^[N,n]$ ]] && exit
 }
 
 function upload-to-github() {
