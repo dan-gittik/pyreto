@@ -247,7 +247,7 @@ function tag-dev-repo() {
     local VERSION="$(cat "$DEV_DIR/$VERSION_FILE")"
     local TAG="$NAME-v$VERSION"
     git -C "$DEV_DIR" add "$DEV_DIR"
-    git -C "$DEV_DIR" commit --allow-empty -m "Updated $NAME to version $VERSION."
+    git -C "$DEV_DIR" commit -m "Updated $NAME to version $VERSION."
     git -C "$DEV_DIR" tag -f "$TAG"
     git -C "$DEV_DIR" push origin "$TAG"
 }
@@ -255,7 +255,7 @@ function tag-dev-repo() {
 function push-to-prod-repo() {
     local VERSION="$(cat "$DEV_DIR/$VERSION_FILE")"
     git -C "$PROD_DIR" add "$PROD_DIR"
-    git -C "$PROD_DIR" commit --allow-empty -m "Updated to version $VERSION."
+    git -C "$PROD_DIR" commit -m "Updated to version $VERSION."
     git -C "$PROD_DIR" push origin master
 }
 
