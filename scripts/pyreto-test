@@ -1,0 +1,17 @@
+#!/bin/bash
+
+set -e
+
+VENV_DIR="$(realpath "$(dirname "${BASH_SOURCE[0]}")/../.venv")"
+PYTHON2="$VENV_DIR/2/bin/python"
+PYTHON3="$VENV_DIR/3/bin/python"
+
+if [ -z "$1" ]
+then
+    ARG="."
+else
+    ARG="$@"
+fi
+
+"$PYTHON2" -m pytest $ARG
+"$PYTHON3" -m pytest $ARG
